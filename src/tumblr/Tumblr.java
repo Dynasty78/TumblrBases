@@ -2,7 +2,12 @@
 package tumblr;
 
 import com.tumblr.jumblr.JumblrClient;
+import com.tumblr.jumblr.types.Post;
 import com.tumblr.jumblr.types.User;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class Tumblr {
@@ -18,8 +23,49 @@ public class Tumblr {
           "ZXjLGeY2jceU8X8r2WRSxdCdf73u6NONaqhbwdVlWyIeYMmZ3q",
           "EBpBjNOfdjCVaKZTcSmfG7qds68zOonViDUxBMkycAsa7Gdgpe"
         );
-
         
-    }
+        Long parametro = 0l;
+        Map<String, Object> params = new HashMap<String, Object>();
+       // params.put("before", 1285429933);
+        List<Post> posts = client.tagged("microwave meals");
+        ArrayList<String> nombreBlogs = new ArrayList<String>();
+        int i = 0;
+        
+        
+       for(Post blogs : posts){   
     
+        if(i == posts.size()-1){
+            parametro = blogs.getTimestamp();
+        }
+        nombreBlogs.add(blogs.getBlogName());
+        i++;
+       
+       }
+       
+        while(true){
+            System.out.println("Prueba");
+            i = 0;
+            params.put("before", parametro);
+            posts = client.tagged("microwave meals",params);
+            
+            if(!posts.isEmpty()){
+                 for(Post blogs : posts){   
+    
+        if(i == posts.size()-1){
+            parametro = blogs.getTimestamp();
+        }
+        nombreBlogs.add(blogs.getBlogName());
+        i++;
+       
+       }
+                
+            }else{
+                break;
+            }
+            
+            
+        }
+        System.out.println(nombreBlogs.size());
+  
+    }
 }
