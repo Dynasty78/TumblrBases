@@ -1,4 +1,3 @@
-
 package tumblr;
 
 import com.tumblr.jumblr.JumblrClient;
@@ -9,13 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class Tumblr {
 
 
-    public static void main(String[] args) {
-        // Authenticate via OAuth
-        JumblrClient client = new JumblrClient(
+       public static void main(String[] args) {
+               JumblrClient client = new JumblrClient(
           "6CJI5nYV1FtCLgLaVrEJBv5ciZMNIlCrHof5KNe4wRPXn2TEYH",
           "twEUONaIooBzP3w3FPkMTnHqWKw8AXTrHzPwI1HrqUyiQRM89u"
         );
@@ -23,27 +20,42 @@ public class Tumblr {
           "ZXjLGeY2jceU8X8r2WRSxdCdf73u6NONaqhbwdVlWyIeYMmZ3q",
           "EBpBjNOfdjCVaKZTcSmfG7qds68zOonViDUxBMkycAsa7Gdgpe"
         );
-        
+
         Long parametro = 0l;
         Map<String, Object> params = new HashMap<String, Object>();
        
         List<Post> posts = client.tagged("microwave meals");
-        ArrayList<String> nombreBlogs = new ArrayList<String>();
-        int i = 0;
         
+        int i = 0;
+        int totalText = 0,
+            totalVideo = 0, totalPhoto = 0, otro = 0, total;
         
        for(Post blogs : posts){   
     
-        if(i == posts.size()-1){
-            parametro = blogs.getTimestamp();
-        }
-        nombreBlogs.add(blogs.getBlogName());
-        i++;
-       
+                if(i == posts.size()-1){
+                    parametro = blogs.getTimestamp();
+                 }
+                
+                switch(blogs.getType()){
+                   
+                    case "text": totalText++;
+                    break;
+                    
+                    case "photo": totalPhoto++;
+                    break;
+                    
+                    case "video": totalVideo++;
+                    break;
+                    
+                    default: otro++;
+                       
+                }
+        
+             i++;
        }
        
         while(true){
-            
+            System.out.println("Prueba");
             i = 0;
             params.put("before", parametro);
             posts = client.tagged("microwave meals",params);
@@ -54,7 +66,21 @@ public class Tumblr {
         if(i == posts.size()-1){
             parametro = blogs.getTimestamp();
         }
-        nombreBlogs.add(blogs.getBlogName());
+        
+         switch(blogs.getType()){
+                   
+                    case "text": totalText++;
+                    break;
+                    
+                    case "photo": totalPhoto++;
+                    break;
+                    
+                    case "video": totalVideo++;
+                    break;
+                    
+                    default: otro++;
+                       
+                }
         i++;
        
        }
@@ -63,9 +89,10 @@ public class Tumblr {
                 break;
             }
             
-            
         }
-        System.out.println(nombreBlogs.size());
+        
+        total = totalText + totalPhoto+ totalVideo+ otro;
+        System.out.println(total);
   
     }
 }
