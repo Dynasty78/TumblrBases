@@ -26,7 +26,7 @@ public class Tumblr {
         
         Long parametro = 0l;
         Map<String, Object> params = new HashMap<String, Object>();
-       // params.put("before", 1285429933);
+       
         List<Post> posts = client.tagged("microwave meals");
         ArrayList<String> nombreBlogs = new ArrayList<String>();
         int i = 0;
@@ -43,7 +43,7 @@ public class Tumblr {
        }
        
         while(true){
-            System.out.println("Prueba");
+            
             i = 0;
             params.put("before", parametro);
             posts = client.tagged("microwave meals",params);
